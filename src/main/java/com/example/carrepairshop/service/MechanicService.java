@@ -1,7 +1,6 @@
 package com.example.carrepairshop.service;
 
 import com.example.carrepairshop.model.Mechanic;
-import com.example.carrepairshop.model.Reservation;
 import com.example.carrepairshop.repository.MechanicRepository;
 import org.springframework.stereotype.Service;
 
