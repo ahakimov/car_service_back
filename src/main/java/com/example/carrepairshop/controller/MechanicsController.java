@@ -1,9 +1,7 @@
 package com.example.carrepairshop.controller;
 
 import com.example.carrepairshop.model.Mechanic;
-import com.example.carrepairshop.model.Reservation;
 import com.example.carrepairshop.service.MechanicService;
-import com.example.carrepairshop.service.ReservationsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +39,7 @@ public class MechanicsController {
     }
 
     @PostMapping("new")
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        return ResponseEntity.ok(reservationsService.createReservation(reservation));
+    public ResponseEntity<Mechanic> createMechanic(@RequestBody Mechanic mechanic) {
+        return ResponseEntity.ok(mechanicService.createMechanic(mechanic));
     }
 }
