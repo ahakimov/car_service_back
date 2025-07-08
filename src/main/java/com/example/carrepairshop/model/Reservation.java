@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "reservations")
+@Table(name = "reservations", schema = "car_service")
 public class Reservation {
     @Id
     @GeneratedValue
@@ -15,8 +15,12 @@ public class Reservation {
     private String contactInfo;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(referencedColumnName = "id")
     private Mechanic mechanic;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Service service;
     private LocalDateTime dateAdded;
     private String status;
 }

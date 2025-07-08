@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "services")
+@Table(name = "services", schema = "car_service")
 public class Service {
     @Id
     @GeneratedValue
