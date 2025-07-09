@@ -1,9 +1,12 @@
 package com.example.carrepairshop.service;
 
 import com.example.carrepairshop.model.Reservation;
+import com.example.carrepairshop.model.ReservationFilter;
 import com.example.carrepairshop.repository.ReservationRepository;
+import com.example.carrepairshop.repository.utils.ReservationSpecification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,20 @@ public class ReservationsService {
 
     public Reservation createReservation(Reservation reservation) {
         return reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> findReservationByVisitDate(LocalDateTime from, LocalDateTime to) {
+        if (from != null && to != null)
+            return reservationRepository.findByVisitDateTimeBetween(from, to);
+
+        if (from != null)
+            return reservationRepository.findByVisitDateTimeAfter(from);
+
+        return reservationRepository.findByVisitDateTimeBefore(to);
+    }
+
+    public List<Reservation> filterReservations(ReservationFilter filter) {
+        return reservationRepository.findAll(ReservationSpecification.filter(filter));
     }
 
 }
