@@ -12,7 +12,14 @@ public class Reservation {
     @Id
     @GeneratedValue
     private Long id;
-    private String contactInfo;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Client client;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Car car;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
@@ -22,5 +29,7 @@ public class Reservation {
     @JoinColumn(referencedColumnName = "id")
     private Service service;
     private LocalDateTime dateAdded;
+    private LocalDateTime visitDateTime;
     private String status;
+    private String additionalDetails;
 }

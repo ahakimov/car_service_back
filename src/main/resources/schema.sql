@@ -47,3 +47,17 @@ create table if not exists car_service.reservations (
     foreign key (mechanic_id) references mechanics(id),
     foreign key (service_id) references services(id)
 );
+
+create table if not exists car_service.reservations (
+    id int PRIMARY KEY NOT NULL auto_increment,
+    client_id long,
+    mechanic_id long,
+    start_date_time datetime,
+    end_date_time datetime,
+    service_id long,
+    status varchar,
+    additional_details varchar,
+    foreign key (client_id) references clients(id),
+    foreign key (mechanic_id) references mechanics(id),
+    foreign key (service_id) references services(id)
+);
