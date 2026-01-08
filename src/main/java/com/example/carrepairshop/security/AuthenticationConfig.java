@@ -17,11 +17,17 @@ public class AuthenticationConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.GET, "/api/books", "/api/books/**").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers("/api/books", "/api/books/**").hasAuthority(ADMIN)
-                        .requestMatchers("/api/users", "/api/users/**").hasAuthority(ADMIN)
-                        .requestMatchers("/public/**", "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/cars").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers(HttpMethod.GET, "/api/mechanics").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers(HttpMethod.GET, "/api/services").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers(HttpMethod.GET, "/api/clients/profile").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers("/api/reservations", "/api/reservations/**").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers("/api/clients", "/api/clients/**").hasAuthority(ADMIN)
+                        .requestMatchers("/api/cars", "/api/cars/**").hasAuthority(ADMIN)
+                        .requestMatchers("/api/mechanics", "/api/mechanics/**").hasAuthority(ADMIN)
+                        .requestMatchers("/api/repair-jobs", "/api/repair-jobs/**").hasAuthority(ADMIN)
+                        .requestMatchers("/api/services", "/api/services/**").hasAuthority(ADMIN)
+                        .requestMatchers( "/auth/**").permitAll()
                         .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
