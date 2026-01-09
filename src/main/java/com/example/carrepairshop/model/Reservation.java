@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "reservations", schema = "car_service")
+@SequenceGenerator(name="reservations_seq", initialValue = 10)
 public class Reservation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="reservations_seq")
     private Long id;
 
     @ManyToOne
