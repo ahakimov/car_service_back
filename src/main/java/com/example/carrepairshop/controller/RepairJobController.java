@@ -1,5 +1,6 @@
 package com.example.carrepairshop.controller;
 
+import com.example.carrepairshop.dto.RepairJobDto;
 import com.example.carrepairshop.model.RepairJob;
 import com.example.carrepairshop.service.RepairJobService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,9 +35,9 @@ public class RepairJobController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PutMapping
-    public ResponseEntity<RepairJob> updateRepairJob(@RequestBody RepairJob RepairJob) {
-        return ResponseEntity.ok(repairJobService.updateRepairJob(RepairJob));
+    @PutMapping("{id}")
+    public ResponseEntity<RepairJob> updateRepairJob(@PathVariable Long id, @RequestBody RepairJobDto repairJobDto) {
+        return ResponseEntity.ok(repairJobService.updateRepairJob(id, repairJobDto));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -49,7 +50,7 @@ public class RepairJobController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PostMapping("new")
-    public ResponseEntity<RepairJob> createRepairJob(@RequestBody RepairJob repairJob) {
-        return ResponseEntity.ok(repairJobService.createRepairJob(repairJob));
+    public ResponseEntity<RepairJob> createRepairJob(@RequestBody RepairJobDto repairJobDto) {
+        return ResponseEntity.ok(repairJobService.createRepairJob(repairJobDto));
     }
 }

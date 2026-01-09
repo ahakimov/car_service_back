@@ -1,7 +1,9 @@
 package com.example.carrepairshop.controller;
 
 import com.example.carrepairshop.model.Mechanic;
+import com.example.carrepairshop.model.RepairJob;
 import com.example.carrepairshop.service.MechanicService;
+import com.example.carrepairshop.service.RepairJobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,11 @@ import static com.example.carrepairshop.openapi.SwaggerConfig.BASIC_AUTH_SECURIT
 @RequestMapping("/api/mechanics")
 public class MechanicsController {
     private final MechanicService mechanicService;
+    private final RepairJobService repairJobService;
 
-    public MechanicsController(MechanicService mechanicService) {
+    public MechanicsController(MechanicService mechanicService, RepairJobService repairJobService) {
         this.mechanicService = mechanicService;
+        this.repairJobService = repairJobService;
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -50,5 +54,11 @@ public class MechanicsController {
     @PostMapping("new")
     public ResponseEntity<Mechanic> createMechanic(@RequestBody Mechanic mechanic) {
         return ResponseEntity.ok(mechanicService.createMechanic(mechanic));
+    }
+
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @GetMapping("{id}/repair-jobs")
+    public List<RepairJob> getRepairJobsForMechanic(@PathVariable Long id) {
+        return repairJobService.findRepairJobsByMechanic(id);
     }
 }
