@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Optional<Client> clientOptional = clientService.validPassword(loginRequest.getId(), loginRequest.getPassword());
+        Optional<Client> clientOptional = clientService.validPassword(loginRequest.getEmail(), loginRequest.getPassword());
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
             return ResponseEntity.ok(new AuthResponse(client.getId(), client.getName()));

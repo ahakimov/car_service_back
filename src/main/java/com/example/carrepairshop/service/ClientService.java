@@ -26,6 +26,10 @@ public class ClientService {
         return clientRepository.findById(id);
     }
 
+    public Optional<Client> findByEmail(String email) {
+        return clientRepository.findClientByEmail(email);
+    }
+
     public Client updateClient(Client client) {
         return clientRepository.save(client);
     }
@@ -42,8 +46,8 @@ public class ClientService {
         return clientRepository.existsByEmail(email);
     }
 
-    public Optional<Client> validPassword(String id, String password) {
-        return findById(id)
+    public Optional<Client> validPassword(String email, String password) {
+        return findByEmail(email)
                 .filter(client -> passwordEncoder.matches(password, client.getPassword()));
     }
 }
