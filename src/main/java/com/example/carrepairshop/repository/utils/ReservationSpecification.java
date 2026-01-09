@@ -31,9 +31,6 @@ public class ReservationSpecification {
             if (reservationFilter.getServiceId() != null)
                 predicates.add(cb.equal(reservation.get("service").get("id"), reservationFilter.getServiceId()));
 
-            if (reservationFilter.getStatusId() != null)
-                predicates.add(cb.equal(reservation.get("status").get("id"), reservationFilter.getStatusId()));
-
             if (reservationFilter.getMechanicId() != null)
                 predicates.add(cb.equal(reservation.get("mechanic").get("id"), reservationFilter.getMechanicId()));
 
