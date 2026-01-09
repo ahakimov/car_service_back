@@ -1,5 +1,7 @@
 package com.example.carrepairshop.service;
 
+import com.example.carrepairshop.dto.ReservationDto;
+import com.example.carrepairshop.dto.mapper.ReservationMapper;
 import com.example.carrepairshop.model.Reservation;
 import com.example.carrepairshop.model.ReservationFilter;
 import com.example.carrepairshop.repository.ReservationRepository;
@@ -12,11 +14,13 @@ import java.util.Optional;
 
 @Service
 public class ReservationsService {
+    private final ReservationMapper reservationMapper;
 
     private final ReservationRepository reservationRepository;
 
-    public ReservationsService(ReservationRepository reservationRepository) {
+    public ReservationsService(ReservationRepository reservationRepository, ReservationMapper reservationMapper) {
         this.reservationRepository = reservationRepository;
+        this.reservationMapper = reservationMapper;
     }
 
     public List<Reservation> getAllReservations() {
@@ -27,7 +31,9 @@ public class ReservationsService {
         return reservationRepository.findById(id);
     }
 
-    public Reservation updateReservation(Reservation reservation) {
+    public Reservation updateReservation(Long id, ReservationDto reservationDto) {
+        Reservation reservation = reservationMapper.fromDto(reservationDto);
+        reservation.setId(id);
         return reservationRepository.save(reservation);
     }
 
@@ -35,8 +41,8 @@ public class ReservationsService {
         reservationRepository.deleteById(id);
     }
 
-    public Reservation createReservation(Reservation reservation) {
-        return reservationRepository.save(reservation);
+    public Reservation createReservation(ReservationDto reservationDto) {
+        return reservationRepository.save(reservationMapper.fromDto(reservationDto));
     }
 
     public List<Reservation> findReservationByVisitDate(LocalDateTime from, LocalDateTime to) {

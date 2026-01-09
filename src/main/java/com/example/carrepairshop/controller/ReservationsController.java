@@ -1,5 +1,6 @@
 package com.example.carrepairshop.controller;
 
+import com.example.carrepairshop.dto.ReservationDto;
 import com.example.carrepairshop.model.Reservation;
 import com.example.carrepairshop.model.ReservationFilter;
 import com.example.carrepairshop.service.ReservationsService;
@@ -36,9 +37,9 @@ public class ReservationsController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PutMapping
-    public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation) {
-        return ResponseEntity.ok(reservationsService.updateReservation(reservation));
+    @PutMapping("{id}")
+    public ResponseEntity<Reservation> updateReservation(@PathVariable Long id, @RequestBody ReservationDto reservationDto) {
+        return ResponseEntity.ok(reservationsService.updateReservation(id, reservationDto));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -51,18 +52,18 @@ public class ReservationsController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PostMapping("new")
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        return ResponseEntity.ok(reservationsService.createReservation(reservation));
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDto reservationDto) {
+        return ResponseEntity.ok(reservationsService.createReservation(reservationDto));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("schedule")
-    public ResponseEntity<List<Reservation>> getReservationsSchedule(@RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
-        return ResponseEntity.ok(reservationsService.findReservationByVisitDate(from, to));
+    public ResponseEntity<List<Reservation>> getReservationsSchedule(@RequestParam String from, @RequestParam String to) {
+        return ResponseEntity.ok(reservationsService.findReservationByVisitDate(LocalDateTime.parse(from), LocalDateTime.parse(to)));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @GetMapping("filter")
+    @PostMapping("filter")
     public ResponseEntity<List<Reservation>> filterReservations(@RequestBody ReservationFilter filter) {
         return ResponseEntity.ok(reservationsService.filterReservations(filter));
     }
