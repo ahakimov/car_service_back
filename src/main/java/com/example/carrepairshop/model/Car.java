@@ -6,9 +6,10 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "cars", schema = "car_service")
+@SequenceGenerator(name="cars_seq", initialValue = 10)
 public class Car {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="cars_seq")
     private Long id;
     private String model;
     private String make;

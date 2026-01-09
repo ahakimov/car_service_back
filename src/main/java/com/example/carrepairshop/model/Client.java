@@ -1,17 +1,15 @@
 package com.example.carrepairshop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "clients", schema = "car_service")
+@SequenceGenerator(name="clients_seq", initialValue = 10)
 public class Client {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="clients_seq")
     private Long id;
     private String name;
     private String phone;
