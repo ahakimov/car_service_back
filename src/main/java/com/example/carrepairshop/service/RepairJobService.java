@@ -1,9 +1,9 @@
 package com.example.carrepairshop.service;
 
+import com.example.carrepairshop.dto.RepairJobDto;
+import com.example.carrepairshop.dto.mapper.RepairJobMapper;
 import com.example.carrepairshop.model.RepairJob;
-import com.example.carrepairshop.model.Reservation;
 import com.example.carrepairshop.repository.RepairJobRepository;
-import com.example.carrepairshop.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +11,13 @@ import java.util.Optional;
 
 @Service
 public class RepairJobService {
+    private final RepairJobMapper repairJobMapper;
 
     private final RepairJobRepository repairJobRepository;
 
-    public RepairJobService(RepairJobRepository repairJobRepository) {
+    public RepairJobService(RepairJobRepository repairJobRepository, RepairJobMapper repairJobMapper) {
         this.repairJobRepository = repairJobRepository;
+        this.repairJobMapper = repairJobMapper;
     }
 
     public List<RepairJob> getAllRepairJobs() {
@@ -26,7 +28,9 @@ public class RepairJobService {
         return repairJobRepository.findById(id);
     }
 
-    public RepairJob updateRepairJob(RepairJob repairJob) {
+    public RepairJob updateRepairJob(Long id, RepairJobDto repairJobDto) {
+        RepairJob repairJob = repairJobMapper.fromDto(repairJobDto);
+        repairJob.setId(id);
         return repairJobRepository.save(repairJob);
     }
 
@@ -34,8 +38,12 @@ public class RepairJobService {
         repairJobRepository.deleteById(id);
     }
 
-    public RepairJob createRepairJob(RepairJob repairJob) {
-        return repairJobRepository.save(repairJob);
+    public RepairJob createRepairJob(RepairJobDto repairJobDto) {
+        return repairJobRepository.save(repairJobMapper.fromDto(repairJobDto));
+    }
+
+    public List<RepairJob> findRepairJobsByMechanic(Long mechanicId) {
+        return repairJobRepository.findRepairJobsByMechanic_Id(mechanicId);
     }
 
 }
