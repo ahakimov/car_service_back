@@ -1,8 +1,8 @@
 package com.example.carrepairshop.security;
 
-import com.example.carrepairshop.model.Client;
+import com.example.carrepairshop.model.User;
 import com.example.carrepairshop.security.user.CustomUserDetails;
-import com.example.carrepairshop.service.ClientService;
+import com.example.carrepairshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,13 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final ClientService clientService;
+    private final UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Client client = clientService.findByEmail(username)
+        User user = userService.findByEmail(username)
                 .orElseThrow();
-        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(client.getRole()));
-        return new CustomUserDetails(client.getId(), "", client.getPassword(), client.getEmail(), authorities);
+        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+        return new CustomUserDetails(user.getId(), user.getPassword(), user.getEmail(), authorities);
     }
 }

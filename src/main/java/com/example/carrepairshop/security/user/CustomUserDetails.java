@@ -11,7 +11,6 @@ import java.util.Collection;
 @Data
 public class CustomUserDetails implements UserDetails {
     private Long id;
-    private String username; //no username in this app, but required for override
     private String password;
     private String email;
     private Collection<? extends GrantedAuthority> authorities;
@@ -28,6 +27,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 }
