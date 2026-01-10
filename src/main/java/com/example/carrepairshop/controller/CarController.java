@@ -1,5 +1,6 @@
 package com.example.carrepairshop.controller;
 
+import com.example.carrepairshop.dto.CarDto;
 import com.example.carrepairshop.model.Car;
 import com.example.carrepairshop.service.CarService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +34,9 @@ public class CarController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PutMapping
-    public ResponseEntity<Car> updateCar(@RequestBody Car car) {
-        return ResponseEntity.ok(carService.updateCar(car));
+    @PutMapping("{id}")
+    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody CarDto carDto) {
+        return ResponseEntity.ok(carService.updateCar(id, carDto));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -48,7 +49,7 @@ public class CarController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PostMapping("new")
-    public ResponseEntity<Car> createCar(@RequestBody Car car) {
-        return ResponseEntity.ok(carService.createCar(car));
+    public ResponseEntity<Car> createCar(@RequestBody CarDto carDto) {
+        return ResponseEntity.ok(carService.createCar(carDto));
     }
 }
