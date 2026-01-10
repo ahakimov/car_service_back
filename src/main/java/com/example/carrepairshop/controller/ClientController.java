@@ -1,8 +1,11 @@
 package com.example.carrepairshop.controller;
 
 import com.example.carrepairshop.model.Client;
+import com.example.carrepairshop.model.Reservation;
+import com.example.carrepairshop.model.ReservationFilter;
 import com.example.carrepairshop.security.user.CustomUserDetails;
 import com.example.carrepairshop.service.ClientService;
+import com.example.carrepairshop.service.ReservationsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +20,11 @@ import static com.example.carrepairshop.openapi.SwaggerConfig.BASIC_AUTH_SECURIT
 @RequestMapping("/api/clients")
 public class ClientController {
     private final ClientService clientService;
+    private final ReservationsService reservationsService;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, ReservationsService reservationsService) {
         this.clientService = clientService;
+        this.reservationsService = reservationsService;
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -55,8 +60,8 @@ public class ClientController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PostMapping("new")
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        return ResponseEntity.ok(clientService.createClient(client));
+    @GetMapping("/{id}/reservations")
+    public ResponseEntity<List<Reservation>> getReservationsForClient(@PathVariable(name = "id") Long clientId) {
+        return ResponseEntity.ok(reservationsService.filterReservations(ReservationFilter.builder().clientId(clientId).build()));
     }
 }
