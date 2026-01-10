@@ -14,4 +14,4 @@ COPY --from=MAVEN_BUILD /build/target/car-repair-shop.jar /app/
 
 ENTRYPOINT ["java", "-jar", "car-repair-shop.jar"]
 
-EXPOSE 8080
+EXPOSE 9341

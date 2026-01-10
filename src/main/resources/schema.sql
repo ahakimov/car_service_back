@@ -4,8 +4,14 @@ create table if not exists car_service.clients (
     id int PRIMARY KEY NOT NULL auto_increment,
     name varchar,
     phone varchar,
-    email varchar,
-    password varchar
+    email varchar
+);
+
+create table if not exists car_service.users (
+   id int PRIMARY KEY NOT NULL auto_increment,
+   email varchar,
+   password varchar,
+   role varchar
 );
 
 create table if not exists car_service.cars (
@@ -39,16 +45,21 @@ create table if not exists car_service.services (
 
 create table if not exists car_service.reservations (
     id int PRIMARY KEY NOT NULL auto_increment,
-    contact_info varchar,
     date_added datetime,
+    visit_date_time datetime,
     status varchar,
+    additional_details varchar,
+    client_id long,
+    car_id long,
     mechanic_id long,
     service_id long,
+    foreign key (client_id) references clients(id),
+    foreign key (car_id) references cars(id),
     foreign key (mechanic_id) references mechanics(id),
     foreign key (service_id) references services(id)
 );
 
-create table if not exists car_service.reservations (
+create table if not exists car_service.repair_jobs (
     id int PRIMARY KEY NOT NULL auto_increment,
     client_id long,
     mechanic_id long,
