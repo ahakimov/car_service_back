@@ -18,11 +18,13 @@ public class AuthenticationConfig {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.GET, "/api/cars").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers(HttpMethod.GET, "/api/mechanics").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers(HttpMethod.GET, "/api/services").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers(HttpMethod.GET, "/api/mechanics", "/api/mechanics/{id}").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers(HttpMethod.GET, "/api/services", "/api/services/**").hasAnyAuthority(ADMIN, USER)
                         .requestMatchers(HttpMethod.GET, "/api/clients/profile").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers(HttpMethod.GET, "/api/users/profile").hasAnyAuthority(ADMIN, USER)
                         .requestMatchers("/api/reservations", "/api/reservations/**").hasAnyAuthority(ADMIN, USER)
                         .requestMatchers("/api/clients", "/api/clients/**").hasAuthority(ADMIN)
+                        .requestMatchers("/api/users", "/api/users/**").hasAuthority(ADMIN)
                         .requestMatchers("/api/cars", "/api/cars/**").hasAuthority(ADMIN)
                         .requestMatchers("/api/mechanics", "/api/mechanics/**").hasAuthority(ADMIN)
                         .requestMatchers("/api/repair-jobs", "/api/repair-jobs/**").hasAuthority(ADMIN)
