@@ -1,12 +1,16 @@
 package com.example.carrepairshop.controller;
 
+import com.example.carrepairshop.model.CreateMechanicRequest;
 import com.example.carrepairshop.model.Mechanic;
 import com.example.carrepairshop.model.RepairJob;
+import com.example.carrepairshop.security.user.CustomUserDetails;
 import com.example.carrepairshop.service.MechanicService;
 import com.example.carrepairshop.service.RepairJobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +35,12 @@ public class MechanicsController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @GetMapping("profile")
+    public Mechanic getMyProfile(@AuthenticationPrincipal CustomUserDetails currentUserDetails) {
+        return mechanicService.findById(currentUserDetails.getId().toString()).get();
+    }
+
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("{id}")
     public Mechanic getMechanic(@PathVariable String id) {
         return mechanicService.findById(id).orElse(null);
@@ -52,8 +62,8 @@ public class MechanicsController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PostMapping("new")
-    public ResponseEntity<Mechanic> createMechanic(@RequestBody Mechanic mechanic) {
-        return ResponseEntity.ok(mechanicService.createMechanic(mechanic));
+    public ResponseEntity<Mechanic> createMechanic(@Valid @RequestBody CreateMechanicRequest request) {
+        return ResponseEntity.ok(mechanicService.createMechanicWithUser(request));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})

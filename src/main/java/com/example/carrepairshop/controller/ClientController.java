@@ -1,6 +1,7 @@
 package com.example.carrepairshop.controller;
 
 import com.example.carrepairshop.model.Client;
+import com.example.carrepairshop.model.CreateClientRequest;
 import com.example.carrepairshop.model.Reservation;
 import com.example.carrepairshop.model.ReservationFilter;
 import com.example.carrepairshop.security.user.CustomUserDetails;
@@ -8,6 +9,7 @@ import com.example.carrepairshop.service.ClientService;
 import com.example.carrepairshop.service.ReservationsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +45,12 @@ public class ClientController {
     @GetMapping("{id}")
     public Client getClient(@PathVariable String id) {
         return clientService.findById(id).orElse(null);
+    }
+
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @PostMapping("new")
+    public ResponseEntity<Client> createClient(@Valid @RequestBody CreateClientRequest request) {
+        return ResponseEntity.ok(clientService.createClientWithUser(request));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
