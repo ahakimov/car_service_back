@@ -10,15 +10,20 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Collections;
-import java.util.List;
+import org.springframework.lang.NonNull;
 
 @Configuration
 public class CorsConfig {
     @Bean
-    CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowed-origins}") List<String> allowedOrigins) {
+    CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowed-origins:*}") String allowedOrigins) {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        if (!"*".equals(allowedOrigins)) {
+            configuration.setAllowCredentials(true);
+            configuration.setAllowedOrigins(Collections.singletonList(allowedOrigins));
+        } else {
+            configuration.setAllowCredentials(false);
+            configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        }
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -27,11 +32,23 @@ public class CorsConfig {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public WebMvcConfigurer corsConfigurer(@Value("${app.cors.allowed-origins:*}") String allowedOrigins) {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
+                if (!"*".equals(allowedOrigins)) {
+                    registry.addMapping("/**")
+                            .allowedOrigins(allowedOrigins)
+                            .allowedMethods("*")
+                            .allowedHeaders("*")
+                            .allowCredentials(true);
+                } else {
+                    registry.addMapping("/**")
+                            .allowedOriginPatterns("*")
+                            .allowedMethods("*")
+                            .allowedHeaders("*")
+                            .allowCredentials(false);
+                }
             }
         };
     }
