@@ -30,7 +30,8 @@ public class Reservation {
     @JoinColumn(referencedColumnName = "id")
     private Service service;
     private LocalDateTime dateAdded;
-    private LocalDateTime visitDateTime;
+    private LocalDateTime visitDateTime;  // Start time
+    private LocalDateTime endDateTime;    // End time
     private String status;
     private String additionalDetails;
 }
