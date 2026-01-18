@@ -22,9 +22,9 @@ insert into car_service.services (service_name, description, price, estimated_du
 values ('Service A', 'Description A', 12345.00, 1),
        ('Service B', 'Description B', 54321.00, 2);
 
-insert into car_service.reservations (date_added, visit_date_time, status, client_id, car_id, mechanic_id, service_id)
-values ('2025-05-05T12:00:00', '2025-05-05T12:00:00', 'in progress', 1, 1, 1, 1),
-       ('2025-06-06T12:00:00', '2025-06-06T12:00:00', 'in progress', 2, 2, 2, 2);
+insert into car_service.reservations (date_added, visit_date_time, end_date_time, status, client_id, car_id, mechanic_id, service_id)
+values ('2025-05-05T12:00:00', '2025-05-05T12:00:00', '2025-05-05T14:00:00', 'in progress', 1, 1, 1, 1),
+       ('2025-06-06T12:00:00', '2025-06-06T12:00:00', '2025-06-06T15:00:00', 'in progress', 2, 2, 2, 2);
 
 insert into car_service.repair_jobs (client_id, mechanic_id, start_date_time, end_date_time, service_id, status, additional_details)
 values (1, 1, '2025-05-05T12:00:00', '2025-05-05T12:00:00', 1, 'in progress', 'additional details'),
