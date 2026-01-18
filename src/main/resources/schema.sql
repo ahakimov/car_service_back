@@ -47,6 +47,7 @@ create table if not exists car_service.reservations (
     id int PRIMARY KEY NOT NULL auto_increment,
     date_added datetime,
     visit_date_time datetime,
+    end_date_time datetime,
     status varchar,
     additional_details varchar,
     client_id long,
