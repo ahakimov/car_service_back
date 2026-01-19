@@ -24,7 +24,36 @@ public class ReservationsService {
     }
 
     public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+        List<Reservation> reservations = reservationRepository.findAll();
+        updateExpiredReservationStatuses(reservations);
+        return reservations;
+    }
+
+    /**
+     * Auto-update status for past reservations:
+     * - Confirmed + past date → completed
+     * - Unconfirmed/In Progress + past date → cancelled
+     */
+    private void updateExpiredReservationStatuses(List<Reservation> reservations) {
+        LocalDateTime now = LocalDateTime.now();
+        for (Reservation r : reservations) {
+            if (r.getVisitDateTime() != null && r.getVisitDateTime().isBefore(now)) {
+                String currentStatus = r.getStatus() != null ? r.getStatus().toLowerCase() : "";
+                // Skip already finalized reservations
+                if ("completed".equals(currentStatus) || "cancelled".equals(currentStatus)) {
+                    continue;
+                }
+                // Confirmed reservations become completed
+                if ("confirmed".equals(currentStatus)) {
+                    r.setStatus("completed");
+                    reservationRepository.save(r);
+                } else {
+                    // Unconfirmed, In Progress, etc. become cancelled
+                    r.setStatus("cancelled");
+                    reservationRepository.save(r);
+                }
+            }
+        }
     }
 
     public Optional<Reservation> findById(String id) {
@@ -56,7 +85,9 @@ public class ReservationsService {
     }
 
     public List<Reservation> filterReservations(ReservationFilter filter) {
-        return reservationRepository.findAll(ReservationSpecification.filter(filter));
+        List<Reservation> reservations = reservationRepository.findAll(ReservationSpecification.filter(filter));
+        updateExpiredReservationStatuses(reservations);
+        return reservations;
     }
 
 }
