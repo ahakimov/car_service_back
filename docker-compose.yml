@@ -1,19 +1,9 @@
-version: '3.8'
-
 services:
   car-repair-shop:
     build: .
-    container_name: car-repair-shop
     ports:
-      - "8080:8080"
+      - "9341:9341"
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=h2
       - JAVA_OPTS=-Xmx512m -Xms256m
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/actuator/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
