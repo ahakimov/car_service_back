@@ -12,6 +12,7 @@ public class ReservationDto {
     private Long serviceId;
     private LocalDateTime dateAdded;
     private LocalDateTime visitDateTime;
+    private LocalDateTime endDateTime;
     private String status;
     private String additionalDetails;
 }

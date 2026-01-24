@@ -25,6 +25,7 @@ public class ReservationMapper {
         reservation.setService(servicesService.findById(reservationDto.getServiceId().toString()).get());
         reservation.setDateAdded(reservationDto.getDateAdded());
         reservation.setVisitDateTime(reservationDto.getVisitDateTime());
+        reservation.setEndDateTime(reservationDto.getEndDateTime());
         reservation.setStatus(reservationDto.getStatus());
         reservation.setAdditionalDetails(reservationDto.getAdditionalDetails());
 
